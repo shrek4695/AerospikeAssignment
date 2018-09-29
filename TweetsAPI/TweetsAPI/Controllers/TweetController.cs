@@ -42,15 +42,20 @@ namespace TweetsAPI.Controllers
             var key = new Key(nameSpace, setName, updatedetails.tweet_id);
             client.Put(new WritePolicy(), key, new Bin(updatedetails.bin_name,updatedetails.update_value));
         }
-        [HttpPut]
+        [HttpDelete]
         [Route("api/Tweet/Delete/")]
         public void DeleteTweets([FromUri]String[] ids)
         {
             var client = new AerospikeClient("18.235.70.103", 3000);
             string nameSpace = "AirEngine";
             string setName = "Shreea";
-            var key = new Key(nameSpace, setName, ids[0]);
+            int counter=0;
+            while(counter<ids.Length)
+            {
+            var key = new Key(nameSpace, setName, ids[counter]);
             client.Delete(new WritePolicy(), key);
+            counter++;
+            }
         }
     }
 }
